@@ -1,0 +1,16 @@
+input {
+    width: 500px;
+    height: 30px;
+    color: purple;
+    font-size: 18px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px 10px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+
+    &::placeholder {
+        color: purple;
+        font-weight: bold;
+    }
+}
