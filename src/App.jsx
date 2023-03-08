@@ -15,7 +15,7 @@ const App = () => {
         <main className="main">
           <Routes>
             <Route path="/all" element={<All />} />
-            <Route path="/tasks" element={<Tasks />} />
+            <Route path="/" element={<Tasks />} />
             <Route path="/important" element={<Important />} />
             <Route path="/completed" element={<Completed />} />
             <Route path="*" element={<NotFoundPage />} />

@@ -1,18 +1,18 @@
 export const ADD_TODO = "ADD_TODO"
 export const REMOVE_TODO = "REMOVE_TODO"
-export const ADD_COMPLETED = "ADD_COMPLETED"
-const TodoReducer = (state = JSON.parse(localStorage.getItem("state")) || [], { type, todo, id }) => {
+export const TOGGLE_COMPLETED = "ADD_COMPLETED"
+export const TOGGLE_IMPORTANT = "TOGGLE_IMPORTANT"
+const TodoReducer = (state = [], { type, todo, id, newCompleted, newImportant }) => {
     switch (type) {
         case ADD_TODO:
-            localStorage.setItem("state", JSON.stringify([...state, todo]))
             return [...state, todo]
         case REMOVE_TODO:
             state = state.filter(item => item.id !== id)
-            localStorage.setItem("state", JSON.stringify(state))
             return state
-        case ADD_COMPLETED:
-            localStorage.setItem("state", JSON.stringify(state))
-            return state     
+        case TOGGLE_COMPLETED:
+            return newCompleted
+        case TOGGLE_IMPORTANT:
+            return newImportant
         default:
             return state;
     }

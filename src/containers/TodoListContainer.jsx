@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import TasksPage from "../pages/TasksPage/TasksPage"
-import { addCompleted, addTodo, removeTodo } from "../redux/actions/todo"
+import { toggleCompleted, addTodo, removeTodo, toggleImportant } from "../redux/actions/todo"
 import { getNotCheckedTodos, getTodos } from "../redux/selectors/todo"
 
 const TodoListContainer = () => {
@@ -15,11 +15,14 @@ const TodoListContainer = () => {
     const remove = (id) => {
         dispatch(removeTodo(id))
     }
-    const completed = (isChecked, id, todos) => {
-        dispatch(addCompleted(isChecked, id, todos))
+    const completed = ( id ) => {
+        dispatch(toggleCompleted( id ))
+    }
+    const important = ( id ) => {
+        dispatch(toggleImportant( id ))
     }
 
-    return <TasksPage add={add} remove={remove} todos={todos} notCheckedTodos={notCheckedTodos} completed={completed} />
+    return <TasksPage add={add} remove={remove}  notCheckedTodos={notCheckedTodos} completed={completed} important={important} />
 }
 
 export default TodoListContainer;

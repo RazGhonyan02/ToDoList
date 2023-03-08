@@ -1,26 +1,32 @@
 import styles from "./All.module.scss"
 import allImg from "../../assets/icons/all.svg"
 import Input from "../../components/Input/Input";
-import { addCompleted, removeTodo } from "../../redux/actions/todo";
+import { toggleCompleted, removeTodo, toggleImportant } from "../../redux/actions/todo";
 import { useState } from "react";
 import Button from "../../components/Button/Button";
-import { AllHooks } from "../../hooks/AllHooks";
+import { useAllHooks } from "../../hooks/useAllHooks";
+import { useDispatch } from "react-redux";
+import ImportantIcon from "../../assets/icons/importantComponent/ImportantIcon";
 const All = () => {
-    const [open, setOpen] = useState(false)
-    const { importantTodos, todos, completedTodos, notCompletedTodos } = AllHooks()
+    const [openCompleted, setOpenCompleted] = useState(false)
+    const [openImportant, setOpenImportant] = useState(false)
+    const dispatch = useDispatch()
+    const { importantTodos, completedTodos, notCompletedTodos } = useAllHooks()
     
-
-    const onRemoveChecked = (e, id, todos) => {
-        dispatch(addCompleted(e.target.value, id, todos))
+    const onOpenCompleted = () => {
+        setOpenCompleted(!openCompleted)
     }
-    const onOpen = () => {
-        setOpen(!open)
+    const onOpenImportant = () => {
+        setOpenImportant(!openImportant)
     }
-    const onChecked = (e, id, todos) => {
-        dispatch(addCompleted(e.target.checked, id, todos))
+    const onCompleted = ( id ) => {
+        dispatch(toggleCompleted( id ))
     }
     const onRemove = (id) => {
         dispatch(removeTodo(id))
+    }
+    const onImportant = ( id ) => {
+        dispatch(toggleImportant( id ))
     }
     
     return (
@@ -31,35 +37,56 @@ const All = () => {
             </div>
                 <h2 className={styles.h2}>Tasks</h2>
             <div className={styles.todoBox}>
-                {notCompletedTodos?.map(({ id, text }) => (
+                {notCompletedTodos?.map(({ id, text, isImportant }) => (
                     <div className={styles.mapBox} key={id} >
-                        <h2>{text}</h2>
-                        <Input type="checkbox" onChange={(e) => {
-                            onChecked(e, id, todos)
+                        <Input type="checkbox" onChange={() => {
+                            onCompleted( id )
                         }} />
+                        <h2>{text}</h2>
                         <Button className={styles.button} text="Remove" onClick={() => {
                             onRemove(id)
                         }} />
+                        <ImportantIcon onClick={() => {
+                            onImportant(id)
+                        }} width="30px" height="30px" fill={isImportant? "red": "black"} />
                     </div>
 
                 ))}
             </div>
-            <h2 role="button" onClick={onOpen} className={styles.h2}>Completed</h2>
-            { open && <div className={styles.dropDown}>
-                {completedTodos?.map(({ id, text }) => (
+            <h2 role="button" onClick={onOpenCompleted} className={styles.h2}>Completed {completedTodos.length}</h2>
+            { openCompleted && <div className={styles.dropDown}>
+                {completedTodos?.map(({ id, text, isCompleted, isImportant }) => (
                     <div className={styles.mapBox} key={id} >
-                        <h2>{text}</h2>
-                        <Input type="checkbox" onChange={() => {
-                            onRemoveChecked(e, id, todos)
+                        <Input type="checkbox" checked={isCompleted} onChange={() => {
+                            onCompleted( id )
                         }} />
+                        <h2>{text}</h2>
                         <Button className={styles.button} text="Remove" onClick={() => {
                             onRemove(id)
                         }} />
+                        <ImportantIcon width="30px" height="30px" fill={isImportant? "red": "black"} />
                     </div>
 
                 ))}
             </div>}
-            <div className={styles.todoBox}></div>
+            <h2 role="button" onClick={onOpenImportant} className={styles.h2}>Important {importantTodos.length}</h2>
+            { openImportant && <div className={styles.dropDown}>
+                {importantTodos?.map(({ id, text, isCompleted, isImportant }) => (
+                    <div className={styles.mapBox} key={id} >
+                        <Input type="checkbox" checked={isCompleted} onChange={() => {
+                            onCompleted( id )
+                        }} />
+                        <h2>{text}</h2>
+                        <Button className={styles.button} text="Remove" onClick={() => {
+                            onRemove(id)
+                        }} />
+                        <ImportantIcon onClick={() => {
+                            onImportant(id)
+                        }} width="30px" height="30px" fill={isImportant? "red": "black"} />
+                    </div>
+
+                ))}
+            </div>}
         </div>
     )
 }

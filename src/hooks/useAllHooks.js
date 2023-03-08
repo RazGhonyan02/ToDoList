@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import { getCompletedTodos, getImportantTodos, getNotCheckedTodos, getTodos } from "../redux/selectors/todo"
 
-export const AllHooks = () => {
+export const useAllHooks = () => {
     const todos = useSelector(getTodos)
     const importantTodos = useSelector(getImportantTodos)
     const completedTodos = useSelector(getCompletedTodos)

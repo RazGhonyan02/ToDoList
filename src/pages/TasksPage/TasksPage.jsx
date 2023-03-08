@@ -3,10 +3,10 @@ import styles from "./TasksPage.module.scss"
 import tasksImg from "../../assets/icons/tasks.svg"
 import { useState } from "react";
 import Button from "../../components/Button/Button";
+import ImportantIcon  from "../../assets/icons/importantComponent/ImportantIcon"
 
-const TasksPage = ({ add, remove, todos, notCheckedTodos, completed }) => {
+const TasksPage = ({ add, remove, notCheckedTodos, completed, important }) => {
     const [text, setText] = useState("")
-    
     const onChange = ({ currentTarget: { value } }) => {
         setText(value)
     }
@@ -19,8 +19,11 @@ const TasksPage = ({ add, remove, todos, notCheckedTodos, completed }) => {
     const onRemove = (id) => {
         remove(id)
     }
-    const onChecked = (e, id, todos) => {
-        completed(e.target.checked, id, todos)
+    const onCompleted = (id) => {
+        completed( id )
+    }
+    const onImportant = (id) => {
+        important(id)
     }
     return (
         <div className={styles.container}>
@@ -29,15 +32,18 @@ const TasksPage = ({ add, remove, todos, notCheckedTodos, completed }) => {
                 <h2>Tasks</h2>
             </div>
             <div className={styles.todoBox}>
-                {notCheckedTodos?.map(({ id, text }) => (
+                {notCheckedTodos?.map(({ id, text, isImportant }) => (
                     <div className={styles.mapBox} key={id} >
-                        <Input type="checkbox" onChange={(e) => {
-                            onChecked(e, id, todos)
+                        <Input type="checkbox" onChange={() => {
+                            onCompleted(id)
                         }} />
                         <h2>{text}</h2>
                         <Button text="Remove" onClick={() => {
                             onRemove(id)
                         }} />
+                        <ImportantIcon onClick={() => {
+                            onImportant(id)
+                        }} width="30px" height="30px" fill={isImportant ? "red": "black"} />
                     </div>
 
                 ))}
