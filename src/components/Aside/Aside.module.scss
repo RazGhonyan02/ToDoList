@@ -20,6 +20,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
+    & p {
+        font-size: 18px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: red;
+        border: 2px solid red;
+        border-radius: 100%;
+        padding: 0 4px;
+        background-color: black;
+    }
 }
 .inactive {
     font-size: 20px;
